@@ -47,10 +47,16 @@ Each server is running a number of jails created with my `jm` tool.  These jails
 +----------------------------------+
 ```
 
-Traffic flow:
+traffic flow:
  - traffic arrives at kibana haproxy master via virtual CARP ip
  - haproxy forwards traffic to a random kibana node
  - kibana looks for database at elasticsearch CARP address
  - traffic arrives at elasticsearch haproxy master via virtual CARP ip
  - haproxy forwards traffic to a random elasticsearch cluster node
  - elasticsearch internally routes traffic to an appropriate shard
+
+tldr:
+ - all kibana nodes are load balanced behind 10.0.0.20 and point at 10.0.0.10
+ - all elasticsearch cluster nodes are load balanced behind 10.0.0.10
+ - destroy any component, and the data will still end up somewhere
+ - this is a PoC.  lots more tuning and nodes needed.
