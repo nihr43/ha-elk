@@ -1,8 +1,4 @@
 ---
- - hosts: haproxy_a, haproxy_b
-   roles:
-    - haproxy
-
  - hosts: elasticsearch_nodes
    roles:
     - elasticsearch
@@ -10,3 +6,11 @@
  - hosts: kibana_nodes
    roles:
     - kibana
+
+ - hosts: haproxy_a
+   roles:
+    - haproxy
+
+ - hosts: haproxy_b
+   roles:
+    - haproxy
