@@ -1,6 +1,7 @@
 ---
  - name: install haproxy
-   pkgng: name=haproxy state=present
+   package: name=haproxy state=latest
+   notify: restart haproxy
 
  - name: create haproxy account
    user:
