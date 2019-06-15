@@ -1,0 +1,16 @@
+---
+ - name: install kibana
+   package: name=kibana6 state=latest
+   notify: restart kibana
+
+ - name: enable kibana
+   service: name=kibana enabled=yes
+
+ - name: configure kibana
+   template:
+    src: kibana.yml
+    dest: /usr/local/etc/kibana/kibana.yml
+    owner: root
+    group: wheel
+    mode: 0644
+   notify: restart kibana

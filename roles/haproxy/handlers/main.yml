@@ -1,0 +1,8 @@
+---
+ - name: restart netif
+   service: name=netif state=restarted
+   listen: "restart network"
+
+ - name: restart haproxy
+   raw: ifconfig {{ carp_interface }} vhid {{ carp_vhid }} state backup && sleep 1 && service haproxy restart && sleep 1
+   listen: "restart haproxy"

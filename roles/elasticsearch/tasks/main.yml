@@ -1,0 +1,28 @@
+---
+ - name: install elasticsearch
+   package: name=elasticsearch6 state=latest
+   notify: restart elasticsearch
+
+ - name: configure elasticsearch
+   template:
+    src: elasticsearch.yml
+    dest: /usr/local/etc/elasticsearch/elasticsearch.yml
+    owner: root
+    group: wheel
+    mode: 0755
+   notify: restart elasticsearch
+
+ - name: configure the jvm
+   template:
+    src: jvm.options
+    dest: /usr/local/etc/elasticsearch/jvm.options
+    owner: root
+    group: wheel
+    mode: 0755
+   notify: restart elasticsearch
+
+ - name: enable elasticsearch
+   service:
+    name: elasticsearch
+    enabled: yes
+    state: started

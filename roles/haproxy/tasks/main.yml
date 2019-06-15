@@ -1,0 +1,24 @@
+---
+ - name: install haproxy
+   pkgng: name=haproxy state=present
+
+ - name: create haproxy account
+   user:
+    name: haproxy
+
+ - name: enable haproxy
+   service: name=haproxy enabled=yes
+
+ - name: configure haproxy
+   template: src=haproxy.conf dest=/usr/local/etc/haproxy.conf
+   notify: restart haproxy
+
+ - name: configure haproxy CARP interface
+   lineinfile:
+    path: /etc/rc.conf
+    regexp: '^ifconfig_{{ carp_interface }}_alias0='
+    line: 'ifconfig_{{ carp_interface }}_alias0="inet vhid {{ carp_vhid }} advskew {{ 200 | random(seed=inventory_hostname) }} pass testpass alias {{ carp_address }}/32"'
+   notify: restart network
+
+ - name: ensure haproxy is running
+   service: name=haproxy state=started

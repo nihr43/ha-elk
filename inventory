@@ -1,0 +1,27 @@
+[freebsd_common:children]
+jails
+
+[jails:children]
+elasticsearch_nodes
+kibana_nodes
+haproxy_a
+haproxy_b
+
+[haproxy_a]
+11e9-haproxy-kibana http_port=5601 proxied_group=kibana_nodes carp_interface=vnet0 carp_vhid='2' carp_address='10.0.0.20'
+8f15-haproxy-elasticsearch http_port=9200 proxied_group=elasticsearch_nodes carp_interface=vnet0 carp_vhid='1' carp_address='10.0.0.10'
+
+[haproxy_b]
+ba5a-haproxy-kibana http_port=5601 proxied_group=kibana_nodes carp_interface=vnet0 carp_vhid='2' carp_address='10.0.0.20'
+9fbb-haproxy-elasticsearch http_port=9200 proxied_group=elasticsearch_nodes carp_interface=vnet0 carp_vhid='1' carp_address='10.0.0.10'
+
+[elasticsearch_nodes]
+39b6-elasticsearch cluster_nodes='["39b6-elasticsearch", "d12c-elasticsearch"]'
+d12c-elasticsearch cluster_nodes='["39b6-elasticsearch", "d12c-elasticsearch"]'
+
+[kibana_nodes]
+8f15-kibana elastic=10.0.0.10:9200
+11e9-kibana elastic=10.0.0.10:9200
+
+[freebsd_common:vars]
+ansible_python_interpreter=/usr/local/bin/python3.7
