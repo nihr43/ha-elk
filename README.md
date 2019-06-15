@@ -6,15 +6,15 @@ Thanks to its internal routing and access via REST, elasticsearch clusters work 
 ## Rational
 
 Why not docker?
- - I need somewhere to pour `all the data`.  Including the kubernetes data.  Its sort of a chicken-and-egg problem.  If elk is bootstrapped in a container management system, then where send those data?  Also, persisted state in kubernetes/swarm is hard.
+ - I need somewhere to pour "all the data".  Including the kubernetes data.  Its sort of a chicken-and-egg problem.  If elk is bootstrapped in a container management system, then where send those data?  Persisted state in kubernetes/swarm is hard.
 
 Why FreeBSD?
- - `/` on zfs with ARC compression. top: `13G Compressed, 31G Uncompressed, 2.35:1 Ratio`
- - For somewhere I plan to "pour all the data", I want it to be essentially bomb-proof.  Modern FreeBSD gives you that, as long a you treat zfs well.
+ - `/` on zfs with ARC compression.
+ - For somewhere I plan to "pour all the data", I want this to be simple and bomb-proof.  Modern FreeBSD gives you that, as long a you treat zfs well.
 
 ## Design
 
-For this example I have two physical servers, `8f14-jmm` and `11e9-jmm`.  Each has failover network paths, failover power supplies, and raid50 zroot pools on cheap sata ssds.
+For this example I have two physical servers, `8f14-jmm` and `11e9-jmm`.  Each has failover network paths, failover power supplies, and raid50 zroot pools on lots of cheap, mismatched sata ssds.
 
 Each server is running a number of jails created with my `jm` tool.  These jails have full network stacks bridged to the host, and are managed using ansible.
 
@@ -59,4 +59,4 @@ tldr:
  - all kibana nodes are load balanced behind 10.0.0.20 and point at 10.0.0.10
  - all elasticsearch cluster nodes are load balanced behind 10.0.0.10
  - destroy any component, and the data will still end up somewhere
- - this is a PoC.  lots more tuning and nodes needed.
+ - this is a PoC.  lots more tuning and nodes needed
